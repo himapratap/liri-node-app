@@ -4,8 +4,9 @@ var spotify = require('spotify');
 var request = require('request');
 var Twitter = require('twitter');
 var fs = require('fs');
+var log = '';
 
- console.log("My arg" +process.argv);
+console.log("My arg" + process.argv);
 
 var args = process.argv;
 var cmd = args[2];
@@ -13,7 +14,7 @@ var title = getTitle();
 liriProcess(cmd);
 //
 // /** General function to get the title of song/movie provided as cmd arguments*/
- function getTitle() {
+function getTitle() {
     var title = '';
     if (args.length > 2) {
         for (var i = 3; i < args.length; i++) {
@@ -27,7 +28,7 @@ liriProcess(cmd);
 }
 
 function liriProcess(cmd) {
-     switch (cmd) {
+    switch (cmd) {
         case 'my-tweets':
             console.log('Getting my tweets');
             showTweets();
@@ -52,8 +53,8 @@ function liriProcess(cmd) {
             justDoIt();
             break;
 
-
     }
+
 }
 
 
@@ -82,8 +83,19 @@ function showTweets() {
             for (var i = 0; i < tweets.length; i++) {
                 console.log("Tweet : " + tweets[i].text);
                 console.log("Created at : " + tweets[i].created_at);
+                log = log.concat("Tweet : " + tweets[i].text + " , " + "Created at : " + tweets[i].created_at + "\n");
             }
+            writeToFile();
         }
+    });
+
+}
+
+function writeToFile() {
+
+    fs.appendFile('log.txt', log, function(err) {
+        if (err)
+            console.log("ERROR : writing to file failed.", err);
     });
 
 }
@@ -124,6 +136,8 @@ function showMovieDetails() {
 
                 }
             }
+            log = log.concat("Title : " + data.Title + ", " + "Year : " + data.Year + ", " + "IMDB Rating : " + data.imdbRating + ", " + "Country : " + data.Country + ", " + "Language : " + data.Language + ", " + "Plot : " + data.Plot + ", " + "Actors : " + data.Actors + "\n");
+            writeToFile();
         }
     });
 }
@@ -144,5 +158,17 @@ function showSongDetails() {
         console.log(" Song's name :" + JSON.stringify(data.tracks.items[0].name));
         console.log(" Preview Link :" + JSON.stringify(data.tracks.items[0].preview_url));
         console.log(" Album :" + JSON.stringify(data.tracks.items[0].album.name));
+
+        log = log.concat("Artist :" + JSON.stringify(data.tracks.items[0].artists[0].name))
+            .concat(",")
+            .concat(" Song's name :" + JSON.stringify(data.tracks.items[0].name))
+            .concat(",")
+            .concat(" Preview Link :" + JSON.stringify(data.tracks.items[0].preview_url))
+            .concat(",")
+            .concat(" Album :" + JSON.stringify(data.tracks.items[0].album.name))
+            .concat("\n");
+        writeToFile();
+
+
     });
 }

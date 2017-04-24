@@ -1,0 +1,5 @@
+Tweet : test2 , Created at : Mon Apr 24 00:23:06 +0000 2017
+Tweet : Hello World , Created at : Sun Apr 23 16:11:31 +0000 2017
+Title : Frozen, Year : 2013, IMDB Rating : 7.5, Country : USA, Language : English, Icelandic, Plot : When the newly crowned Queen Elsa accidentally uses her power to turn things into ice to curse her home in infinite winter, her sister, Anna, teams up with a mountain man, his playful reindeer, and a snowman to change the weather condition., Actors : Kristen Bell, Idina Menzel, Jonathan Groff, Josh Gad
+ Artist :"Serton Becka", Song's name :"Gagnam Style - Dance Remix", Preview Link :"https://p.scdn.co/mp3-preview/8fd05d0e1f1898d570143c89b11299401f2b7e5d?cid=null", Album :"As Melhores Músicas Eletrônicas Internacionais: Novas Mais Tocadas de Electrônica Internacional, Pop e Dance Atuais"
+Artist :"Backstreet Boys", Song's name :"I Want It That Way", Preview Link :"https://p.scdn.co/mp3-preview/e72a05dc3f69c891e3390c3ceaa77fad02f6b5f6?cid=null", Album :"The Hits--Chapter One"
