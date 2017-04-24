@@ -3,45 +3,67 @@ var twitterKeys = key.twitterKeys;
 var spotify = require('spotify');
 var request = require('request');
 var Twitter = require('twitter');
+var fs = require('fs');
 
+ console.log("My arg" +process.argv);
 
-console.log(twitterKeys.consumer_key);
-
-
-
-
-// spotify-this-song
-//
-// movie-this
-//
-// do-what-it-says
 var args = process.argv;
 var cmd = args[2];
-
-switch (cmd) {
-    case 'my-tweets':
-        console.log('Getting my tweets');
-        showTweets();
-        break;
-    case 'spotify-this-song':
-        var song = getName();
-        if (song == '') {
-            song = "The Sign by Ace of Base";
+var title = getTitle();
+liriProcess(cmd);
+//
+// /** General function to get the title of song/movie provided as cmd arguments*/
+ function getTitle() {
+    var title = '';
+    if (args.length > 2) {
+        for (var i = 3; i < args.length; i++) {
+            title = title.concat(args[i]).concat(" ");
         }
-        console.log("Searching for details of the song:" + song);
-        showSongDetails(song);
+        // remove last added space from name
+        title = title.substring(0, title.length - 1);
+    }
 
-        break;
-    case 'movie-this':
-        var title = getName();
-        if (title == '') {
-            title = 'Mr. Nobody';
-        }
-        console.log('Searching for details of the movie:' + title);
-        showMovieDetails(title);
-        break;
+    return title;
+}
+
+function liriProcess(cmd) {
+     switch (cmd) {
+        case 'my-tweets':
+            console.log('Getting my tweets');
+            showTweets();
+            break;
+        case 'spotify-this-song':
+            if (title == '') {
+                title = "The Sign by Ace of Base";
+            }
+            console.log("Searching for details of the song:" + title);
+            showSongDetails();
+
+            break;
+        case 'movie-this':
+            if (title == '') {
+                title = 'Mr. Nobody';
+            }
+            console.log('Searching for details of the movie:' + title);
+            showMovieDetails();
+            break;
+
+        case 'do-what-it-says':
+            justDoIt();
+            break;
 
 
+    }
+}
+
+
+function justDoIt() {
+    fs.readFile("random.txt", "utf-8", function(error, data) {
+        var line = data.split(',');
+        title = line[1];
+        liriProcess(line[0]);
+
+    });
 }
 
 function showTweets() {
@@ -66,16 +88,6 @@ function showTweets() {
 
 }
 
-/** General function to get the name of song/movie provided as cmd arguments*/
-function getName() {
-    var name = '';
-    for (var i = 3; i < args.length; i++) {
-        name = name.concat(args[i]).concat(" ");
-    }
-    // remove last added space from name
-    name = name.substring(0, name.length - 1);
-    return name;
-}
 
 
 /**
@@ -89,7 +101,7 @@ function getName() {
  * Rotten Tomatoes Rating.
  * Rotten Tomatoes URL
  */
-function showMovieDetails(title) {
+function showMovieDetails() {
     var url = 'http://www.omdbapi.com/?t=' + title;
     request(url, function(error, response, body) {
         console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
@@ -116,10 +128,10 @@ function showMovieDetails(title) {
     });
 }
 
-function showSongDetails(song) {
+function showSongDetails() {
     spotify.search({
         type: 'track',
-        query: song
+        query: title
     }, function(err, data) {
         if (err) {
             console.log('Error occurred: ' + err);
